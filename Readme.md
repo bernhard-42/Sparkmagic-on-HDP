@@ -12,6 +12,14 @@ Details see [https://github.com/jupyter-incubator/sparkmagic](https://github.com
 
 ## 2.1 Install sparkmagic
 
+Install Jupyter, if you don't already have it:
+
+```bash
+$ sudo -H pip install jupyter notebook ipython 
+```
+
+Install Sparkmagic:
+
 ```bash
 $ sudo -H pip install sparkmagic
 ```
@@ -19,12 +27,12 @@ $ sudo -H pip install sparkmagic
 ## 2.2 Install Kernels
 
 ```bash
-$ sudo -H pip show sparkmagic # check path, e.g /usr/local/lib/python2.7/site-packages
+$ pip show sparkmagic # check path, e.g /usr/local/lib/python2.7/site-packages
 
 $ cd /usr/local/lib/python2.7/site-packages
 
-$ sudo -H jupyter-kernelspec install --user sparkmagic/kernels/sparkkernel
-$ sudo -H jupyter-kernelspec install --user sparkmagic/kernels/pysparkkernel
+$ jupyter-kernelspec install --user sparkmagic/kernels/sparkkernel
+$ jupyter-kernelspec install --user sparkmagic/kernels/pysparkkernel
 
 ```
 
@@ -120,3 +128,7 @@ Select *Create Session*. If you have copied [config.json](config.json) to `~/.sp
 [Sparkmagic for Scala](Sparkmagic-Scala.ipynb)
 
 [Spark in Python Notebook](Spark-in-Python-Notebook.ipynb)
+
+# 6 Calling Livy via Knox
+
+See [Knox.md](Knox.md)
