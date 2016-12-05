@@ -1,0 +1,27 @@
+{
+  "session_configs": {
+    "driverMemory": "2G",
+    "executorCores": 4,
+    "proxyUser": "bernhard",
+    "conf": {
+      "spark.master": "yarn-cluster",
+      "spark.jars.packages": "com.databricks:spark-csv_2.10:1.5.0"
+    }
+  },
+
+
+  "wait_for_idle_timeout_seconds": 15,
+  "status_sleep_seconds": 2,
+  "statement_sleep_seconds": 2,
+  "livy_session_startup_timeout_seconds": 60,
+
+  "ignore_ssl_errors": false,
+
+  "use_auto_viz": true,
+  "max_results_sql": 2500,
+  "pyspark_sql_encoding": "utf-8",
+
+  "heartbeat_refresh_seconds": 30,
+  "livy_server_heartbeat_timeout_seconds": 0,
+  "heartbeat_retry_seconds": 10
+}
