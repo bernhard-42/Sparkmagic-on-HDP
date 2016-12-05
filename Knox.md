@@ -71,9 +71,9 @@ A test user is `guest`with password `uest-password`
 
 If Knox does not have a valid certificate for HTTPS requests, reconfigure [config.json](config.json) end set
 
-'''json
+```json
  "ignore_ssl_errors": false
-'''
+```
 
 Then restart Jupyter and open a Spark Notebook.
 
