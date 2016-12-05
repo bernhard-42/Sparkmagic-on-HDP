@@ -42,21 +42,19 @@ $ sudo chown -R knox:knox /usr/hdp/current/knox-server/data/services/livy
 
 
 
-- Publish new Path via Ambari
+- Publish new Path via Ambari: Goto Knox Configuration and add at the end of *Advanced Topology*:
 
-Goto Knox Configuration and add at the end of *Advanced Topology*:
+	```xml
+		<topology>
 
-```xml
-	<topology>
+		...
 
-	...
-
-        <service>
-            <role>LIVYSERVER</role>
-            <url>http://master1.localdomain:8998</url>
-        </service>
-	</topology>
-```
+	        <service>
+	            <role>LIVYSERVER</role>
+	            <url>http://master1.localdomain:8998</url>
+	        </service>
+		</topology>
+	```
 
 ## Start LDAP (optional)
 
