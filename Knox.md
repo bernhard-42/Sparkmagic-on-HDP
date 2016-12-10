@@ -17,7 +17,10 @@ $ sudo chown -R knox:knox /usr/hdp/current/knox-server/data/services/livy
 	```xml
 	<service role="LIVYSERVER" name="livy" version="0.1.0">
 	  <routes>
-	    <route path="/livy/**"/>
+	    <route path="/livy/v1/sessions">
+	        <rewrite apply="LIVYSERVER/livy/addusername/inbound" to="request.body"/>
+	    </route>
+	    <route path="/livy/v1/**?**"/>
 	  </routes>
 	</service>
 	```
@@ -31,16 +34,41 @@ $ sudo chown -R knox:knox /usr/hdp/current/knox-server/data/services/livy
 
 	```xml
 	<rules>
-	  <rule dir="IN" name="LIVYSERVER/livy/inbound" pattern="*://*:*/**/livy/v1/?{**}">
+	  <rule name="LIVYSERVER/livy/user-name">
+	    <rewrite template="{$username}"/>
+	  </rule>
+	  <rule dir="IN" name="LIVYSERVER/livy/root/inbound" pattern="*://*:*/**/livy/v1/?{**}">
 	    <rewrite template="{$serviceUrl[LIVYSERVER]}"/>
 	  </rule>
-	  <rule dir="IN" name="LIVYSERVER/livy/inbound" pattern="*://*:*/**/livy/v1/{path=**}?{**}">
+	  <rule dir="IN" name="LIVYSERVER/livy/path/inbound" pattern="*://*:*/**/livy/v1/{path=**}?{**}">
 	    <rewrite template="{$serviceUrl[LIVYSERVER]}/{path=**}?{**}"/>
 	  </rule>
+	  <filter name="LIVYSERVER/livy/addusername/inbound">
+	    <content type="*/json">
+	      <apply path="$.proxyUser" rule="LIVYSERVER/livy/user-name"/>
+	    </content>
+	  </filter>
 	</rules>
 	```
 
+	Note that the name "livy" attribute and the path .../services/livy/... need to be the same.
 
+	The route /livy/v1/sessions is a special treatment for the POST request to create a Livy session. The request body e.g. looks like:
+
+	```json
+	{ 
+		"driverMemory":"2G",
+		"executorCores":4,
+		"executorMemory":"8G",
+		"proxyUser":"bernhard",
+		"conf":{
+			"spark.master":"yarn-cluster",
+		  "spark.jars.packages":"com.databricks:spark-csv_2.10:1.5.0"
+		}
+	}
+	```
+
+  Livy server will use proxUser to run the Spark session. To avoid that a user can provide here any user (e.g. a more privileged), Knox will need to rewrite the the json body to replace what so ever is the value of proxyUser is with the username of the authenticated user, see next section.
 
 - Publish new Path via Ambari: Goto Knox Configuration and add at the end of *Advanced Topology*:
 
